@@ -489,6 +489,80 @@ MonoBehaviour:
   scale: 8
   offsetX: 100
   offsetY: 100
+--- !u!1 &636699953
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 636699955}
+  - component: {fileID: 636699954}
+  m_Layer: 0
+  m_Name: ObjectSpawner
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &636699954
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 636699953}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a2462b6d9f092384ea7f1499f8e69981, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  terrain: {fileID: 608081676}
+  flowers:
+  - {fileID: 2153456347341862418, guid: 7358ad30e7ab6be4b8cf21062d019675, type: 3}
+  - {fileID: 1223156714505594708, guid: 91367e40ea3f3ad4a90bbf1e7a32d9d1, type: 3}
+  - {fileID: 1973268181744308885, guid: ad737f18422ef564aa21b23aab39d274, type: 3}
+  - {fileID: 6590975227295379492, guid: 6f67d1c79c9b196459c5de7ea6ce6077, type: 3}
+  - {fileID: 1179445593872686852, guid: cd03a41894dab5e49abe8481b9a4a630, type: 3}
+  - {fileID: 7537165645186567766, guid: 0b6bd30c5d303194db3c59feae69ab39, type: 3}
+  - {fileID: 4522537107456461547, guid: 7f72c76c87dff5149967072a8aabddef, type: 3}
+  - {fileID: 1034637672061153995, guid: ea732816104f9474d83cbe0dbb7c4258, type: 3}
+  - {fileID: 2701850113685488679, guid: 296cd3b7478d68a4eaa772d9fd3ab3ed, type: 3}
+  plants:
+  - {fileID: 7182954667185978330, guid: b33ce8376149eb040be6057eed2bd12f, type: 3}
+  - {fileID: 1202788212063637620, guid: eb2e3b1d2f96f724e97c8d931ec0d6fc, type: 3}
+  - {fileID: 2597305830255750082, guid: d795a570d77409c4e8f64d728f66a677, type: 3}
+  - {fileID: 3889244126477486128, guid: 5bc68b98108d78a418afb40cc75e2a81, type: 3}
+  - {fileID: 2631127626581351435, guid: 0e418186bde4c6d4ab2d787c4e5346db, type: 3}
+  rocks:
+  - {fileID: 1562119382739742, guid: c07f24e35f07ce74ba43afa35d48adf7, type: 3}
+  - {fileID: 1220206043906976, guid: 86263e8355f96ba4ab9fdf4e96c2090f, type: 3}
+  - {fileID: 1128399435428950, guid: 94a3318e328358d4095f16b054b14180, type: 3}
+  grass:
+  - {fileID: 8812584711120714047, guid: 91d8d8ad5c541394c80f7cc7e1fd253b, type: 3}
+  - {fileID: 7045990119674233780, guid: 8e20bb73d6781f047a846b8e13553d15, type: 3}
+  - {fileID: 2022498996388788194, guid: ea784f90c6a294d4c943e54ce9184fb2, type: 3}
+  - {fileID: 5982839853698224172, guid: c00784b589bee494b831054cc54dbf7b, type: 3}
+  flowerCount: 100
+  plantCount: 100
+  rockCount: 20
+  grassCount: 100
+--- !u!4 &636699955
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 636699953}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 58.001423, y: -20.545416, z: 140.60033}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &832575517
 GameObject:
   m_ObjectHideFlags: 0
@@ -546,3 +620,4 @@ SceneRoots:
   - {fileID: 410087041}
   - {fileID: 832575519}
   - {fileID: 608081674}
+  - {fileID: 636699955}
