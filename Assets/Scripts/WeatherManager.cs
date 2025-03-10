@@ -45,6 +45,7 @@ public class WeatherManager : MonoBehaviour
         if (rainEffect != null)
         {
             rainEffect.Stop();
+            rainEffect.Clear();
         }
         else
         {
@@ -96,9 +97,16 @@ public class WeatherManager : MonoBehaviour
                                    newWeather == WeatherType.Storm ? 1500 : 0;
 
         ParticleSystem.EmissionModule emission = rainEffect.emission;
+
         float duration = 2f;
         float elapsedTime = 0f;
         float startRate = emission.rateOverTime.constant;
+
+        if (isRaining)
+        {
+            rainEffect.gameObject.SetActive(true);
+            rainEffect.Play(); // Ensure the particle system is playing
+        }
 
         while (elapsedTime < duration)
         {
@@ -113,6 +121,7 @@ public class WeatherManager : MonoBehaviour
         if (!isRaining)
         {
             rainEffect.Stop();
+            rainEffect.Clear();
             StopSound();
         }
         else
@@ -126,25 +135,35 @@ public class WeatherManager : MonoBehaviour
         }
     }
 
-    private IEnumerator ThunderEffect()
+   private IEnumerator ThunderEffect()
+{
+    if (lightningFlash == null || thunderSoundClip == null)
     {
-        if (lightningFlash == null || thunderSoundClip == null)
-        {
-            Debug.LogWarning("Thunder or Lightning effect missing! Assign them in the Inspector.");
-            yield break;
-        }
-
-        while (isRaining && currentWeather == WeatherType.Storm)
-        {
-            yield return new WaitForSeconds(Random.Range(5, 15));
-            if (!isRaining) break;
-
-            lightningFlash.enabled = true;
-            PlaySound(thunderSoundClip, false);
-            yield return new WaitForSeconds(0.2f);
-            lightningFlash.enabled = false;
-        }
+        Debug.LogWarning("Thunder or Lightning effect missing! Assign them in the Inspector.");
+        yield break;
     }
+
+    while (isRaining && currentWeather == WeatherType.Storm)
+    {
+        yield return new WaitForSeconds(Random.Range(5, 15)); // Random delay between lightning strikes
+        if (!isRaining) break;
+
+        // Simulate multiple lightning flashes in a burst
+        int flashCount = Random.Range(1, 3); // 1 to 3 quick flashes
+        for (int i = 0; i < flashCount; i++)
+        {
+            lightningFlash.enabled = true;
+            lightningFlash.intensity = Random.Range(2f, 5f); // Random brightness
+            yield return new WaitForSeconds(Random.Range(0.1f, 0.3f)); // Quick flash duration
+            lightningFlash.enabled = false;
+            yield return new WaitForSeconds(Random.Range(0.1f, 0.2f)); // Small delay between flashes
+        }
+
+        // Play thunder sound slightly delayed after the flash (realistic)
+        yield return new WaitForSeconds(Random.Range(0.2f, 1f)); 
+        PlaySound(thunderSoundClip, false);
+    }
+}
 
     private void ToggleWeather()
     {

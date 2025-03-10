@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections.Generic;
 
 public class TreeRockSpawner : MonoBehaviour
 {
@@ -12,6 +13,13 @@ public class TreeRockSpawner : MonoBehaviour
     public int treeCount = 30;
     public int rockCount = 40;
 
+    [Header("Spawn Settings")]
+    public float minTreeDistance = 5.0f;
+    public float minRockDistance = 3.0f;
+
+    private List<Vector3> treePositions = new List<Vector3>();
+    private List<Vector3> rockPositions = new List<Vector3>();
+
     private void Start()
     {
         if (terrain == null)
@@ -20,18 +28,21 @@ public class TreeRockSpawner : MonoBehaviour
             return;
         }
 
-        SpawnObjects(trees, treeCount, 0.3f, 1.0f); // Trees spawn on higher terrain
-        SpawnObjects(rocks, rockCount, 0.0f, 0.3f); // Rocks spawn in lower areas
+        SpawnObjects(rocks, rockCount, 0.0f, 0.3f, rockPositions, minRockDistance);
+        SpawnObjects(trees, treeCount, 0.3f, 1.0f, treePositions, minTreeDistance, rockPositions);
     }
 
-    void SpawnObjects(GameObject[] objectArray, int count, float minHeight, float maxHeight)
+    void SpawnObjects(GameObject[] objectArray, int count, float minHeight, float maxHeight, List<Vector3> occupiedPositions, float minDistance, List<Vector3> avoidPositions = null)
     {
         if (objectArray.Length == 0) return;
 
         TerrainData terrainData = terrain.terrainData;
-
-        for (int i = 0; i < count; i++)
+        int attempts = count * 10; // Prevent infinite loops
+        
+        for (int i = 0; i < count && attempts > 0; i++)
         {
+            attempts--;
+            
             float randomX = Random.Range(0, terrainData.size.x);
             float randomZ = Random.Range(0, terrainData.size.z);
             float terrainHeight = terrain.SampleHeight(new Vector3(randomX, 0, randomZ)) / terrainData.size.y;
@@ -40,6 +51,11 @@ public class TreeRockSpawner : MonoBehaviour
                 continue;
 
             Vector3 position = new Vector3(randomX, terrainHeight * terrainData.size.y, randomZ);
+
+            // Ensure proper spacing
+            if (IsTooClose(position, occupiedPositions, minDistance) || (avoidPositions != null && IsTooClose(position, avoidPositions, minDistance)))
+                continue;
+
             GameObject objectToSpawn = objectArray[Random.Range(0, objectArray.Length)];
             GameObject spawnedObject = Instantiate(objectToSpawn, position, Quaternion.identity);
 
@@ -57,7 +73,19 @@ public class TreeRockSpawner : MonoBehaviour
                 spawnedObject.transform.localScale *= Random.Range(0.5f, 1.0f); // Scale rocks smaller
             }
 
+            occupiedPositions.Add(position);
             Debug.Log($"Spawning {objectToSpawn.name} at {position} with normal {terrainNormal}");
         }
     }
+
+    bool IsTooClose(Vector3 position, List<Vector3> otherPositions, float minDistance)
+    {
+        foreach (var otherPosition in otherPositions)
+        {
+            if (Vector3.Distance(position, otherPosition) < minDistance)
+                return true;
+        }
+        return false;
+    }
 }
+
