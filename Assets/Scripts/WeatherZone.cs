@@ -2,17 +2,21 @@ using UnityEngine;
 
 public class WeatherZone : MonoBehaviour
 {
-    public bool isRainyZone; // Set in Inspector: true = rain, false = clear
+    public WeatherManager.WeatherType weatherType; // Select weather for this zone
 
-    [System.Obsolete]
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
         {
-            WeatherManager weatherManager = FindObjectOfType<WeatherManager>();
+            WeatherManager weatherManager = FindFirstObjectByType<WeatherManager>();
             if (weatherManager != null)
             {
-                weatherManager.SetWeather(isRainyZone);
+                weatherManager.SetWeather(weatherType);
+                Debug.Log("Player entered weather zone: " + weatherType);
+            }
+            else
+            {
+                Debug.LogWarning("WeatherManager NOT found in scene!");
             }
         }
     }
