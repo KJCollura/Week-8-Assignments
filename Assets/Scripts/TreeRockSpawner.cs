@@ -45,12 +45,12 @@ public class TreeRockSpawner : MonoBehaviour
             
             float randomX = Random.Range(0, terrainData.size.x);
             float randomZ = Random.Range(0, terrainData.size.z);
-            float terrainHeight = terrain.SampleHeight(new Vector3(randomX, 0, randomZ)) / terrainData.size.y;
+            float terrainHeight = terrain.SampleHeight(new Vector3(randomX, 0, randomZ));
 
-            if (terrainHeight < minHeight || terrainHeight > maxHeight)
+            if (terrainHeight < minHeight * terrainData.size.y || terrainHeight > maxHeight * terrainData.size.y)
                 continue;
 
-            Vector3 position = new Vector3(randomX, terrainHeight * terrainData.size.y, randomZ);
+            Vector3 position = new Vector3(randomX, terrainHeight, randomZ);
 
             // Ensure proper spacing
             if (IsTooClose(position, occupiedPositions, minDistance) || (avoidPositions != null && IsTooClose(position, avoidPositions, minDistance)))
@@ -61,15 +61,17 @@ public class TreeRockSpawner : MonoBehaviour
 
             // Get terrain normal for slope alignment
             Vector3 terrainNormal = terrainData.GetInterpolatedNormal(randomX / terrainData.size.x, randomZ / terrainData.size.z);
+            spawnedObject.transform.position = position;
+            spawnedObject.transform.rotation = Quaternion.FromToRotation(Vector3.up, terrainNormal);
 
             if (System.Array.Exists(trees, tree => tree == objectToSpawn))
             {
-                spawnedObject.transform.rotation = Quaternion.Euler(0, Random.Range(0f, 360f), 0);
+                spawnedObject.transform.rotation *= Quaternion.Euler(0, Random.Range(0f, 360f), 0);
                 spawnedObject.transform.localScale *= Random.Range(3.5f, 5.5f); // Increase tree size
             }
             else if (System.Array.Exists(rocks, rock => rock == objectToSpawn))
             {
-                spawnedObject.transform.rotation = Quaternion.LookRotation(Vector3.Cross(spawnedObject.transform.right, terrainNormal), terrainNormal);
+                spawnedObject.transform.rotation = Quaternion.FromToRotation(Vector3.up, terrainNormal);
                 spawnedObject.transform.localScale *= Random.Range(0.5f, 1.0f); // Scale rocks smaller
             }
 
