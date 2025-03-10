@@ -9,12 +9,16 @@ public class ObjectSpawner : MonoBehaviour
     public GameObject[] plants;
     public GameObject[] rocks;
     public GameObject[] grass;
+    public GameObject[] trees;
+    public GameObject[] mushrooms;
 
     [Header("Spawn Counts")]
     public int flowerCount = 50;
     public int plantCount = 75;
     public int rockCount = 40;
     public int grassCount = 100;
+    public int treeCount = 30;
+    public int mushroomCount = 60;
 
     private void Start()
     {
@@ -28,6 +32,8 @@ public class ObjectSpawner : MonoBehaviour
         SpawnObjects(plants, plantCount, 0.2f, 0.8f);
         SpawnObjects(rocks, rockCount, 0.0f, 0.3f);
         SpawnObjects(grass, grassCount, 0.4f, 0.9f);
+        SpawnObjects(trees, treeCount, 0.5f, 1.0f); // Trees should spawn on higher terrain
+        SpawnObjects(mushrooms, mushroomCount, 0.2f, 0.5f); // Mushrooms in mid-low height areas
     }
 
     void SpawnObjects(GameObject[] objectArray, int count, float minHeight, float maxHeight)
